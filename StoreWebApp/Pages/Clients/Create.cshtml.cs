@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Data.SqlClient;
 
 namespace StoreWebApp.Pages.Clients
 {
@@ -25,11 +26,39 @@ namespace StoreWebApp.Pages.Clients
                 return;
             }
 
+            try
+            {
+                String connectionString = "Data Source=DESKTOP-DC9H67P;Initial Catalog=Store;Integrated Security=True";
+                using (SqlConnection connection = new SqlConnection(connectionString)) 
+                {
+                connection.Open();
+                    String sql = "INSERT INTO clients " +
+                        "(name, email, phone, address) VALUES " +
+                        "(@name, @email, @phone, @address);";
+
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        command.Parameters.AddWithValue("@name", clientInfo.name);
+                        command.Parameters.AddWithValue("@email", clientInfo.email);
+                        command.Parameters.AddWithValue("@phone", clientInfo.phone);
+                        command.Parameters.AddWithValue("@address", clientInfo.address);
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex) { 
+                errorMessage = ex.Message;
+                return;
+            }
+
             clientInfo.name = "";
             clientInfo.email = "";
             clientInfo.phone = "";
             clientInfo.address = "";
             successMessage = "New Client Added Successfully";
+
+            Response.Redirect("/Clients/Index");
         }
     }
 }

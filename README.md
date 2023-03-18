@@ -1,4 +1,4 @@
-# This is a supporting CRUD site for ETL Test Automation created using ASP.NET Core & MS SQL Server
+# Supporting CRUD site for ETL Test Automation created using ASP.NET Core & MS SQL Server
 
 ## Environment Setup Guide (Windows)
 1. Download Visual Studio from https://visualstudio.microsoft.com/
